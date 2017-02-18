@@ -46,7 +46,7 @@
 #define HM_NS HippoMocks::
 #endif
 
-#ifdef _MSC_VER
+#if (defined(_MSC_VER) || defined(__MINGW32__))
 #ifdef _WIN64
 #define WINCALL
 #else
@@ -54,7 +54,7 @@
 #endif
 #endif
 #ifndef DEBUGBREAK
-#ifdef _MSC_VER
+#if (defined(_MSC_VER) || defined(__MINGW32__))
 extern "C" __declspec(dllimport) int WINCALL IsDebuggerPresent();
 extern "C" __declspec(dllimport) void WINCALL DebugBreak();
 #define DEBUGBREAK(e) if (IsDebuggerPresent()) DebugBreak(); else (void)0
@@ -100,7 +100,7 @@ extern "C" __declspec(dllimport) void WINCALL DebugBreak();
 #endif
 
 #ifdef SOME_X86
-#if defined(_MSC_VER) && (defined(_WIN32) || defined(_WIN64))
+#if (defined(_MSC_VER) || defined(__MINGW32__)) && (defined(_WIN32) || defined(_WIN64))
 #define _HIPPOMOCKS__ENABLE_CFUNC_MOCKING_SUPPORT
 #elif defined(__linux__) && defined(__GNUC__)
 #define _HIPPOMOCKS__ENABLE_CFUNC_MOCKING_SUPPORT
@@ -1192,7 +1192,7 @@ public:
 	virtual ~func_index() {}
 };
 
-#ifdef _MSC_VER
+#if (defined(_MSC_VER) || defined(__MINGW32__))
 template <int s>
 int virtual_function_index(unsigned char *func)
 {
@@ -3405,7 +3405,7 @@ public:
 			  typename M, typename N, typename O, typename P>
 	TCall<Y,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P> &RegisterExpect_(Y (*func)(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P), RegistrationType expect, const char *functionName, const char *fileName, unsigned long lineNo);
 
-#if defined(_MSC_VER) && !defined(_WIN64)
+#if (defined(_MSC_VER) || defined(__MINGW32__)) && !defined(_WIN64)
 	template <int X, typename Y>
 	TCall<Y> &RegisterExpect_(Y (__stdcall *func)(), RegistrationType expect, const char *functionName, const char *fileName, unsigned long lineNo);
 	template <int X, typename Y, typename A>
@@ -3784,7 +3784,7 @@ public:
 	TCall<Y,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P> &RegisterExpect_(Z2 *mck, Y (Z::*func)(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P) const, RegistrationType expect, const char *functionName, const char *fileName, unsigned long lineNo) { return RegisterExpect_<X>(mck, (Y(Z::*)(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P))(func), expect, functionName ,fileName, lineNo); }
 #endif
 
-#if defined(_MSC_VER) && !defined(_WIN64)
+#if (defined(_MSC_VER) || defined(__MINGW32__)) && !defined(_WIN64)
 	// COM only support - you can duplicate this for cdecl and fastcall if you want to, but those are not as common as COM.
 	template <int X, typename Z2, typename Y, typename Z>
 	TCall<Y> &RegisterExpect_(Z2 *mck, Y (__stdcall Z::* func)(), RegistrationType expect, const char *functionName, const char *fileName, unsigned long lineNo);
@@ -4638,7 +4638,7 @@ public:
 		return MockRepoInstanceHolder<0>::instance->template DoExpectation<Y>(NULL, std::pair<int, int>(0, X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P>(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p));
 	}
 
-#ifdef _MSC_VER
+#if (defined(_MSC_VER) || defined(__MINGW32__))
 	template <int X>
 	Y __stdcall stdcallexpectation0()
 	{
@@ -4741,7 +4741,7 @@ public:
 		MockRepository *repo = mock<Z>::repo;
 		return repo->template DoExpectation<Y>(this, mock<Z>::translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P>(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p));
 	}
-#if defined(_MSC_VER) && !defined(_WIN64)
+#if (defined(_MSC_VER) || defined(__MINGW32__)) && !defined(_WIN64)
 	template <int X>
 	static Y __stdcall static_stdcallexpectation0()
 	{
@@ -5075,7 +5075,7 @@ public:
 		MockRepoInstanceHolder<0>::instance->DoVoidExpectation(NULL, std::pair<int, int>(0, X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P>(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p));
 	}
 
-#ifdef _MSC_VER
+#if (defined(_MSC_VER) || defined(__MINGW32__))
 	template <int X>
 	void __stdcall stdcallexpectation0()
 	{
@@ -5178,7 +5178,7 @@ public:
 		MockRepository *repo = mock<Z>::repo;
 		repo->DoVoidExpectation(this, mock<Z>::translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P>(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p));
 	}
-#if defined(_MSC_VER) && !defined(_WIN64)
+#if (defined(_MSC_VER) || defined(__MINGW32__)) && !defined(_WIN64)
 	template <int X>
 	static void __stdcall static_stdcallexpectation0()
 	{
@@ -5319,7 +5319,7 @@ TCall<void> &MockRepository::RegisterExpectDestructor(Z2 *mck, RegistrationType 
 	return *call;
 }
 
-#if defined(_MSC_VER) && !defined(_WIN64)
+#if (defined(_MSC_VER) || defined(__MINGW32__)) && !defined(_WIN64)
 // Support for COM, see declarations
 template <int X, typename Z2, typename Y, typename Z>
 TCall<Y> &MockRepository::RegisterExpect_(Z2 *mck, Y (__stdcall Z::*func)(), RegistrationType expect, const char *funcName, const char *fileName, unsigned long lineNo)
@@ -5814,7 +5814,7 @@ TCall<Y,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P> &MockRepository::RegisterExpect_(Y (*fu
   return *call;
 }
 
-#if defined(_MSC_VER) && !defined(_WIN64)
+#if (defined(_MSC_VER) || defined(__MINGW32__)) && !defined(_WIN64)
 template <int X, typename Y>
 TCall<Y> &MockRepository::RegisterExpect_(Y (__stdcall *func)(), RegistrationType expect, const char *funcName, const char *fileName, unsigned long lineNo)
 {
